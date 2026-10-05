@@ -115,6 +115,6 @@ uv run python manage.py makemigrations --check --dry-run
 
 Токены и адаптивная сетка: `static/css/site.css`. Onest размещён локально, лицензия SIL OFL — `static/fonts/OFL.txt`; источник — Google Fonts (Onest). Собственный JS обслуживает только мобильное меню.
 
-В header и footer используется предоставленный логотип Moscow Python Pro: `static/images/mp-pro-logo.svg` экспортирован из `Лого /pro/mp-pro-logo-light.ai`. Сохранены исходные контуры и цвета; убраны только фон страницы и внешние поля. Favicon использует контур фирменной звезды из этого же файла. OG-изображение — предоставленная обложка `Лого /mp-pro-cover-light-1920x1080.png`, конвертированная в WebP без изменения композиции. Исходники в папке `Лого ` не включаются в Docker-образ. Орнамент и фотографии не используются.
+В header и footer используется предоставленный логотип Moscow Python Pro: `static/images/mp-pro-logo.svg` экспортирован из исходника `mp-pro-logo-light.ai`. Сохранены исходные контуры и цвета; убраны только фон страницы и внешние поля. Favicon использует контур фирменной звезды из этого же файла. OG-изображение — предоставленная обложка `mp-pro-cover-light-1920x1080.png`, конвертированная в WebP без изменения композиции. В репозитории хранятся только подготовленные для сайта assets; исходные вложения и макеты не включены. Орнамент и фотографии не используются.
 
 Официальные ссылки: https://moscowpython.ru/, https://t.me/moscow_python, https://www.youtube.com/moscowdjangoru, https://github.com/moscowpython. Контакты корпоративного блока — из PDF.
