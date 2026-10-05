@@ -1,6 +1,6 @@
 x-app: &app
   build: .
-  env_file: .env
+  # env_file: .env
   environment:
     DATABASE_URL: postgresql://${POSTGRES_USER:-moscowpythonpro}:${POSTGRES_PASSWORD:-local-development-only}@db:5432/${POSTGRES_DB:-moscowpythonpro}
     DEFAULT_ADMIN_LOGIN: ${DEFAULT_ADMIN_LOGIN:-}
