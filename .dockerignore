@@ -1,0 +1,15 @@
+.git
+.venv
+.env
+.env.*
+.aws
+.codex
+.agents
+*.sqlite3*
+*.pdf
+*.xlsx
+__pycache__
+*.pyc
+.ruff_cache
+staticfiles
+__screenshots__

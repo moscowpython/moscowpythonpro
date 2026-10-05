@@ -1,0 +1,10 @@
+<article class="resident">
+  <span class="item-number" aria-hidden="true">{{ forloop.counter|stringformat:'02d' }}</span>
+  <div class="resident-body">
+    <h3>{{ resident.name }}</h3>
+    <p class="resident-company">{{ resident.company }}</p>
+    <p class="resident-position">{{ resident.position }}</p>
+    {% if resident.bio %}<p class="resident-bio">{{ resident.bio }}</p>{% endif %}
+    {% if resident.website %}<a class="resident-link" href="{{ resident.website }}" target="_blank" rel="noopener noreferrer">{{ resident.website|cut:'https://'|cut:'http://'|cut:'www.' }} <span aria-hidden="true">↗</span><span class="sr-only"> — {{ resident.name }}, новая вкладка</span></a>{% endif %}
+  </div>
+</article>

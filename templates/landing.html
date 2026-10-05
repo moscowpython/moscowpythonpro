@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Сообщество опытных разработчиков</span><span class="hero-edition">Москва / Офлайн</span></div>
+    <div class="hero-grid">
+      <div class="hero-main">
+        <h1 id="hero-title">Как быть<br>разработчиком,<br>которого ИИ<br><span class="green">не заменит<span class="hero-period">.</span></span></h1>
+        <p class="hero-description">Камерные встречи о том, что остаётся<br class="desktop-break"> за кадром ИИ-революции.</p>
+        <a class="button" href="#schedule">Смотреть расписание <span aria-hidden="true">↓</span></a>
+      </div>
+      <aside class="hero-aside" aria-label="О встречах">
+        <div class="hero-note"><span class="aside-label">Меньше сцены.<br>Больше разговора.</span><p>20–30 человек.<br>Практикующие инженеры.<br>Вопросы напрямую.</p></div>
+        {% if next_event %}<a class="next-event" href="#event-{{ next_event.pk }}">
+          <span class="eyebrow">Ближайшая встреча <span aria-hidden="true">↗</span></span>
+          <time class="next-date" datetime="{{ next_event.starts_at|date:'c' }}">{{ next_event.starts_at|date:'d.m' }}<span>{{ next_event.starts_at|date:'H:i' }} МСК</span></time>
+          <span class="next-title">{{ next_event.title }}</span>
+        </a>{% endif %}
+      </aside>
+    </div>
+    <div class="hero-foot"><span>Архитектура. Решения. Люди.</span><span>От сообщества Moscow Python <span aria-hidden="true">↙</span></span></div>
+  </div>
+</section>
+
+<section id="schedule" class="section schedule" aria-labelledby="schedule-title">
+  <div class="container">
+    <div class="section-heading"><div><span class="eyebrow">01 / Встречаемся</span><h2 id="schedule-title">Ближайшие<br>мероприятия<span class="green">.</span></h2></div><p>Москва. Небольшая аудитория.<br>Большие инженерные вопросы.</p></div>
+    <div class="event-list">{% for event in upcoming %}{% include 'components/event.html' %}{% empty %}<div class="empty-schedule"><h3>Новые мероприятия скоро</h3><p>Анонсы — в <a href="https://t.me/moscow_python" target="_blank" rel="noopener noreferrer">Telegram Moscow Python ↗</a></p></div>{% endfor %}</div>
+    {% if archive %}<div class="archive"><h3>Прошедшие</h3><ul>{% for event in archive %}<li><time datetime="{{ event.starts_at|date:'c' }}">{{ event.starts_at|date:'d.m.Y' }}</time><span>{{ event.title }}</span></li>{% endfor %}</ul></div>{% endif %}
+  </div>
+</section>
+
+<section id="about" class="section about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-grid"><div><span class="eyebrow">02 / Зачем Pro</span><h2 id="about-title">ИИ —<br>усилитель<span class="green">.</span></h2></div>
+      <div class="about-copy"><p class="lead">Рутину всё чаще делает ИИ.<br>Инженерные решения — всё ещё вы.</p><p>Сильного разработчика определяет не скорость печати и не знание синтаксиса. Важнее понимать систему целиком, отвечать за решения и работать с командой.</p><p>Moscow Python Pro — серия камерных мероприятий об этих навыках. Для тех, кто понимает: разработчик и «кодер» — разные люди.</p></div>
+    </div>
+    <div class="principles-intro"><span class="eyebrow">База, которая остаётся с вами</span><span>Инструменты меняются. Принципы работают.</span></div>
+    <ol class="principles">
+      <li><span class="item-number">01</span><h3>Архитектурное мышление</h3><p>Как собрать систему из модулей</p></li>
+      <li><span class="item-number">02</span><h3>Понимание принципов</h3><p>Почему так, а не иначе</p></li>
+      <li><span class="item-number">03</span><h3>Видение связей</h3><p>Как изменение здесь отразится там</p></li>
+      <li><span class="item-number">04</span><h3>Ответственность за решение</h3><p>Что будет через полгода</p></li>
+      <li><span class="item-number">05</span><h3>Доменная экспертиза</h3><p>Понимать задачу, а не только код</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="manifesto" aria-labelledby="manifesto-title"><div class="container manifesto-inner"><div><span class="eyebrow">Наш главный принцип</span><h2 id="manifesto-title">Не душно.<br><span>Полезно.</span></h2></div><div class="manifesto-note"><span class="big-arrow" aria-hidden="true">↙</span><p>20–30 человек.<br>Офлайн.<br>Живой разговор.</p><span>Опыт, который не передаётся в записи.</span></div></div></section>
+
+<section id="residents" class="section residents" aria-labelledby="residents-title"><div class="container">
+  <div class="section-heading"><div><span class="eyebrow">03 / Люди</span><h2 id="residents-title">Резиденты<br>Moscow Python Pro<span class="green">.</span></h2></div><p>Практикующие инженеры и руководители.<br>Каждый день решают эти задачи<br>в реальных проектах.</p></div>
+  <div class="resident-grid">{% for resident in residents %}{% include 'components/resident.html' %}{% empty %}<p>Знакомство с резидентами — скоро.</p>{% endfor %}</div>
+</div></section>
+
+<section id="formats" class="section formats" aria-labelledby="formats-title"><div class="container">
+  <div class="section-heading"><div><span class="eyebrow">04 / Как встречаемся</span><h2 id="formats-title">Под тему.<br>Не наоборот<span class="green">.</span></h2></div><p>Формат — способ разобраться в вопросе.<br>Выбираем тот, который работает.</p></div>
+  <dl class="format-list">
+    <div><dt>Воркшоп</dt><dd class="format-duration">2 часа</dd><dd>Будний вечер. Разбираемся на практике.</dd></div>
+    <div><dt>Большой воркшоп</dt><dd class="format-duration">4–8 часов</dd><dd>Выходной. Больше времени на задачу.</dd></div>
+    <div><dt>Круглый стол</dt><dd class="format-duration">1,5–2 часа</dd><dd>Обычно 2–3 спикера. Живые вопросы напрямую.</dd></div>
+    <div><dt>Буткэмп</dt><dd class="format-duration">Серия встреч</dd><dd>Связанные воркшопы с погружением в тему.</dd></div>
+  </dl>
+  <div class="other-formats"><span class="eyebrow">И не только</span><p>Разбор новостей <span>/</span> Code review <span>/</span> Кейс-клуб <span>/</span> Фейл-клуб</p></div>
+</div></section>
+
+<section class="section perks" aria-labelledby="perks-title"><div class="container perks-grid"><div><span class="eyebrow">05 / Продолжаем разговор</span><h2 id="perks-title">Больше,<br>чем одна<br>встреча<span class="green">.</span></h2><p>Сообщество в сообществе.<br>Остаёмся на связи и после мероприятия.</p></div><ul class="perks-list">
+  <li>Онлайн-сообщество с резидентами</li><li>Опросы по будущим темам</li><li>Приоритетные анонсы</li><li>Ранние цены на билеты для себя и друзей</li><li>Материалы после мероприятий</li><li>Онлайн-эфиры с резидентами и гостями</li><li>Ваши идеи для новых форматов и перков</li>
+</ul></div></section>
+
+<section class="section organizers" aria-labelledby="organizers-title"><div class="container organizer-grid"><div><span class="eyebrow">06 / Кто делает</span><h2 id="organizers-title">Moscow Python.<br>С 2012 года<span class="green">.</span></h2></div><div><p class="lead">Мы собираем людей,<br>которым интересен Python.</p><p>Митапы Moscow Python, конференции Moscow Python Conf, Python Day в рамках Positive Hack Days — мы создаём места для профессионального разговора.</p><p>С 2016 по 2026 год около 2000 человек прошли наши курсы Learn Python. Мы продолжаем развивать российское Python-сообщество. Pro — следующий шаг.</p><a class="text-cta" href="https://moscowpython.ru/" target="_blank" rel="noopener noreferrer">О сообществе <span aria-hidden="true">↗</span></a></div></div></section>
+
+<section id="companies" class="section corporate" aria-labelledby="corporate-title"><div class="container">
+  <span class="eyebrow">07 / Для компаний</span><div class="corporate-grid"><div><h2 id="corporate-title">Тот же разговор.<br><span>Для вашей<br>команды.</span></h2><p class="corporate-description">Проведём Moscow Python Pro в вашем офисе<br class="desktop-break"> или на площадке в центре Москвы.</p></div><div class="corporate-details"><p>Формат, темы и экспертов подберём под задачу вашей команды.</p><ul><li>20–30 участников</li><li>Живой разговор без барьера сцены</li><li>Реальные инженерные практики</li><li>Темы и спикеры под ваш запрос</li></ul><a class="button button-light" href="https://t.me/v_dombrovsky" target="_blank" rel="noopener noreferrer">Обсудить мероприятие <span aria-hidden="true">↗</span></a><address><strong>Валентин Домбровский</strong><span>Сооснователь Moscow Python</span><div><a href="https://t.me/v_dombrovsky" target="_blank" rel="noopener noreferrer">@v_dombrovsky ↗</a><a href="mailto:dombrovsky.v@gmail.com">dombrovsky.v@gmail.com</a></div></address></div></div>
+</div></section>
+{% endblock %}

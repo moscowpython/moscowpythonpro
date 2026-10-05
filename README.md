@@ -1,0 +1,117 @@
+# Moscow Python Pro
+
+Одностраничный сайт камерных профессиональных мероприятий Moscow Python. Python 3.12, Django 5.2 LTS, Django Templates и Admin. Расписание и резиденты хранятся в БД. Frontend-фреймворков и отдельного API нет.
+
+## Локальный запуск
+
+Требуются Python 3.12+ и [uv](https://docs.astral.sh/uv/).
+
+```bash
+cp .env.example .env
+uv sync --frozen
+uv run python manage.py migrate
+uv run python manage.py createsuperuser
+uv run python manage.py runserver
+```
+
+Сайт: http://127.0.0.1:8000/ · Admin: http://127.0.0.1:8000/admin/ · healthcheck: http://127.0.0.1:8000/health
+
+SQLite по умолчанию. `.env` подхватывается автоматически, переменные процесса имеют приоритет. Пароль администратора задаётся интерактивно; предустановленной учётной записи нет.
+
+## Управление контентом
+
+В Admin доступны **Мероприятия** и **Резиденты**. Изменения появляются на сайте при следующем запросе; публикация не требует redeploy.
+
+- Мероприятие: название, начало/окончание по Москве, произвольный формат, спикеры по одному на строку, описание, регистрационная ссылка, место, публикация.
+- Резидент: имя, компания, должность, короткая биография, необязательная ссылка, порядок и публикация. Меньший номер отображается выше. Спикеры мероприятия остаются независимым текстовым списком.
+- Без ссылки регистрации отображается «Регистрация скоро».
+- С заполненным окончанием событие попадает в архив в момент окончания. Без окончания — в следующую московскую полночь. Показаны все актуальные события и последние пять прошедших. Hero выбирает первое событие, которое ещё не началось.
+- Остальные тексты находятся в Django Templates. CMS для них нет.
+
+## Исходные данные и миграции
+
+Источники: `Что такое Moscow Python Pro.pdf` и `Расписание Moscow Python Pro.xlsx` в корне проекта. PDF содержит позиционирование и биографии; лист «Предстоящие события», строки 5–7 XLSX — расписание. Лист «Архив» пуст. Год 2026 задан в ТЗ.
+
+Миграции `0002_seed_events` и `0002_seed_residents` автоматически добавляют три события (6, 9 и 23 октября 2026, 19:00 МСК) и восемь резидентов. Отдельная fixture и команда `loaddata` не нужны. Повторный `migrate` не перезаписывает данные. Не откатывайте и не применяйте повторно seed-миграции: обратная операция сохраняет записи, повторное применение создаст дубликаты.
+
+```bash
+uv run python manage.py migrate
+uv run python manage.py makemigrations --check --dry-run
+```
+
+Продолжительность в текстовом формате не конвертируется в `ends_at`: время окончания и место в XLSX не заданы. Редактор может добавить их через Admin. Биографии сокращены из PDF без дополнительных достижений.
+
+## Environment variables
+
+| Переменная | Назначение |
+| --- | --- |
+| `SECRET_KEY` | Обязательный секрет Django. Пример в `.env.example` только для локальной разработки. |
+| `DEBUG` | `True` локально, `False` в production; по умолчанию `False`. |
+| `ALLOWED_HOSTS` | Домены через запятую, без схемы. В production указать свой домен и `127.0.0.1` для контейнерного healthcheck. |
+| `DATABASE_URL` | SQLite URL или PostgreSQL URL вида `postgresql://user:password@db:5432/moscowpythonpro`. Спецсимволы в URL кодируются. |
+| `CSRF_TRUSTED_ORIGINS` | Разрешённые origins через запятую, со схемой. |
+| `SITE_URL` | Абсолютный origin для canonical и OpenGraph; обязателен с HTTPS в production. |
+| `TRUST_PROXY_SSL_HEADER` | По умолчанию `False`. Включать только за доверенным proxy, который удаляет входной `X-Forwarded-Proto` и выставляет свой. |
+| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Конфигурация PostgreSQL в Compose. Заменить локальные значения перед production. |
+| `DEFAULT_ADMIN_LOGIN`, `DEFAULT_ADMIN_PASSWORD` | Необязательная пара для настройки тестового администратора после миграций в Compose. По умолчанию пустые. |
+
+## Docker
+
+Требуются Docker Engine и Compose v2.
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+docker compose exec web python manage.py createsuperuser
+```
+
+Compose запускает PostgreSQL 17 с постоянным volume, ждёт его readiness, выполняет миграции отдельным сервисом и запускает Gunicorn. Порт доступен только на `127.0.0.1:8000`. Compose переопределяет `DATABASE_URL` из `.env` адресом сервиса `db`.
+
+Для тестов можно задать в `.env` обе переменные `DEFAULT_ADMIN_LOGIN` и `DEFAULT_ADMIN_PASSWORD`. После миграций Compose запускает `setup_default_admin`: создаёт активного суперпользователя с указанным логином или обновляет пароль и права существующего пользователя с этим логином. Тогда ручной `createsuperuser` не нужен. Если хотя бы одно значение пустое, пользователи не изменяются. Пароль хранится стандартным хешем Django и не выводится в логи.
+
+При изменении значений повторите `docker compose up --build -d` или запустите `docker compose run --rm migrate`. Изменение логина создаёт другую учётную запись; предыдущая не удаляется. Вне Docker доступна команда `uv run python manage.py setup_default_admin`.
+
+```bash
+docker compose logs web
+docker compose down
+```
+
+`down` сохраняет БД; `down -v` удалит данные. Перед обновлением приложения сделайте резервную копию PostgreSQL.
+
+## Production
+
+Настройте переменные, уникальный длинный `SECRET_KEY`, PostgreSQL, публичный `SITE_URL`, hosts и CSRF origins. Завершайте TLS на reverse proxy и направляйте трафик на Gunicorn. HTTP перенаправляется на HTTPS; `/health` исключён для локальных probes. Secure cookies, CSRF, HSTS для текущего домена и стандартная Django authentication включены.
+
+Без Docker:
+
+```bash
+uv sync --frozen --no-dev
+uv run python manage.py migrate
+uv run python manage.py collectstatic --noinput
+uv run python manage.py check --deploy
+uv run gunicorn config.wsgi:application --bind 127.0.0.1:8000 --workers 2 --access-logfile -
+```
+
+WhiteNoise раздаёт статику сайта и Admin с хешированными именами и сжатием. После изменения assets повторите `collectstatic`. В Docker это выполняется при сборке. Не используйте `runserver` в production. Для production-обновления Compose: `docker compose up --build -d` запускает новую миграцию вместе с обновлённым образом.
+
+`check --deploy` может напомнить про HSTS subdomains/preload: они намеренно выключены, пока не подтверждена HTTPS-конфигурация всех поддоменов. Не включайте их вслепую.
+
+## Проверки
+
+```bash
+uv run python manage.py test
+uv run ruff check .
+uv run python manage.py makemigrations --check --dry-run
+```
+
+Тесты проверяют московскую полночь, время окончания, многодневные события, сортировку, архив, публикацию, регистрацию, безопасный JSON-LD, healthcheck и сохранение через Admin. Для проверки PostgreSQL задайте `DATABASE_URL` тестового сервера (пользователю необходимо право создания тестовой БД) и повторите `manage.py test`.
+
+Визуальная приёмка: 320, 375, 768, 1024 и 1440 px, длинные заголовки и имена, клавиатура, меню, reduced motion, отсутствие горизонтальной прокрутки. Регистрационные ссылки открываются на Timepad, оплата на сайте не выполняется.
+
+## Визуальная система и assets
+
+Токены и адаптивная сетка: `static/css/site.css`. Onest размещён локально, лицензия SIL OFL — `static/fonts/OFL.txt`; источник — Google Fonts (Onest). Собственный JS обслуживает только мобильное меню.
+
+По договорённости до получения брендовых файлов используются текстовый Moscow Python / Pro, типографический favicon `/P` и OG-афиша. Это заглушки, а не перерисованный логотип. После получения официального SVG замените wordmark в header/footer, favicon и OG-изображение; орнамент пока отсутствует. Фотографии не используются.
+
+Официальные ссылки: https://moscowpython.ru/, https://t.me/moscow_python, https://www.youtube.com/moscowdjangoru, https://github.com/moscowpython. Контакты корпоративного блока — из PDF.
