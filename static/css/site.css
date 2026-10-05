@@ -175,18 +175,15 @@ img{
   gap:var(--space-6)
 }
 .wordmark{
-  display:flex;
-  align-items:baseline;
-  gap:var(--space-3);
-  font-size:1.2rem;
-  font-weight:700;
-  letter-spacing:-.045em;
+  display:block;
+  flex-shrink:0;
+  width:260px;
   text-decoration:none;
-  white-space:nowrap;
-  color:var(--black)
 }
-.pro-mark{
-  color:var(--mp-green)
+.wordmark img{
+  display:block;
+  width:100%;
+  height:auto;
 }
 .navigation{
   display:flex;
@@ -1235,8 +1232,7 @@ h1{
     display:none
   }
   .wordmark{
-    font-size:1.05rem;
-    gap:var(--space-2)
+    width:200px;
   }
 }
 @media(max-width:359px){
@@ -1244,7 +1240,7 @@ h1{
     --hero:2.4rem;
   }
   .wordmark{
-    font-size:.9375rem
+    width:176px;
   }
   .header-inner{
     gap:var(--space-2)
