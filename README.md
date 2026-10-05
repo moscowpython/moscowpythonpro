@@ -51,6 +51,7 @@ uv run python manage.py makemigrations --check --dry-run
 | `DATABASE_URL` | SQLite URL или PostgreSQL URL вида `postgresql://user:password@db:5432/moscowpythonpro`. Спецсимволы в URL кодируются. |
 | `CSRF_TRUSTED_ORIGINS` | Разрешённые origins через запятую, со схемой. |
 | `SITE_URL` | Абсолютный origin для canonical и OpenGraph; обязателен с HTTPS в production. |
+| `SITE_URL_FROM_REQUEST` | По умолчанию `False`. Для тестового случайного домена: `True` и пустой `SITE_URL`; canonical, OG и JSON-LD используют origin текущего запроса. |
 | `TRUST_PROXY_SSL_HEADER` | По умолчанию `False`. Включать только за доверенным proxy, который удаляет входной `X-Forwarded-Proto` и выставляет свой. |
 | `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Конфигурация PostgreSQL в Compose. Заменить локальные значения перед production. |
 | `DEFAULT_ADMIN_LOGIN`, `DEFAULT_ADMIN_PASSWORD` | Необязательная пара для настройки тестового администратора после миграций в Compose. По умолчанию пустые. |
@@ -70,6 +71,8 @@ Compose запускает PostgreSQL 17 с постоянным volume, ждё�
 Для тестов можно задать в `.env` обе переменные `DEFAULT_ADMIN_LOGIN` и `DEFAULT_ADMIN_PASSWORD`. После миграций Compose запускает `setup_default_admin`: создаёт активного суперпользователя с указанным логином или обновляет пароль и права существующего пользователя с этим логином. Тогда ручной `createsuperuser` не нужен. Если хотя бы одно значение пустое, пользователи не изменяются. Пароль хранится стандартным хешем Django и не выводится в логи.
 
 При изменении значений повторите `docker compose up --build -d` или запустите `docker compose run --rm migrate`. Изменение логина создаёт другую учётную запись; предыдущая не удаляется. Вне Docker доступна команда `uv run python manage.py setup_default_admin`.
+
+Для тестового окружения со случайным HTTPS-доменом используйте `DEBUG=False`, `ALLOWED_HOSTS=*`, `SITE_URL_FROM_REQUEST=True`, пустые `SITE_URL` и `CSRF_TRUSTED_ORIGINS`, `TRUST_PROXY_SSL_HEADER=True`. Reverse proxy должен сохранять исходный `Host` и устанавливать `X-Forwarded-Proto: https`, заменяя значение клиента. CSRF остаётся включённым: запросы админки должны приходить с того же origin. Порт Compose остаётся локальным, `127.0.0.1:8000`; HTTPS обслуживает proxy на этой машине. При переходе на постоянный домен верните явные `ALLOWED_HOSTS`, `SITE_URL` и `SITE_URL_FROM_REQUEST=False`.
 
 ```bash
 docker compose logs web

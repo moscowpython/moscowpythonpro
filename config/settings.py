@@ -24,9 +24,10 @@ if not SECRET_KEY:
 ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]" if DEBUG else "")
 CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 SITE_URL = os.getenv("SITE_URL", "http://localhost:8000" if DEBUG else "").rstrip("/")
-if not SITE_URL:
+SITE_URL_FROM_REQUEST = env_bool("SITE_URL_FROM_REQUEST")
+if not SITE_URL and not SITE_URL_FROM_REQUEST:
     raise ImproperlyConfigured("Set SITE_URL to the public HTTPS origin")
-if not DEBUG and not SITE_URL.startswith("https://"):
+if not DEBUG and SITE_URL and not SITE_URL.startswith("https://"):
     raise ImproperlyConfigured("Production SITE_URL must use HTTPS")
 
 INSTALLED_APPS = [
