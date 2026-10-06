@@ -36,6 +36,8 @@ services:
         condition: service_healthy
   web:
     <<: *app
+    volumes:
+      - resident_photos:/app/media
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
@@ -44,3 +46,4 @@ services:
     restart: unless-stopped
 volumes:
   postgres_data:
+  resident_photos:

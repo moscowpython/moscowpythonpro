@@ -1,6 +1,7 @@
 <article class="resident">
   <span class="item-number" aria-hidden="true">{{ forloop.counter|stringformat:'02d' }}</span>
   <div class="resident-body">
+    {% if resident.photo %}<img class="resident-photo" src="{{ resident.photo.url }}" width="160" height="200" alt="{{ resident.name }}" loading="lazy">{% endif %}
     <h3>{{ resident.name }}</h3>
     <p class="resident-company">{{ resident.company }}</p>
     <p class="resident-position">{{ resident.position }}</p>

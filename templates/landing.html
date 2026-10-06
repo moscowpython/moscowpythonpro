@@ -2,7 +2,7 @@
 {% block content %}
 <section class="hero" aria-labelledby="hero-title">
   <div class="container">
-    <div class="hero-eyebrow"><span class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Сообщество опытных разработчиков</span><span class="hero-edition">Москва / Офлайн</span></div>
+    <div class="hero-eyebrow"><span class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Сообщество опытных разработчиков</span><span class="hero-edition">Москва / Оффлайн</span></div>
     <div class="hero-grid">
       <div class="hero-main">
         <h1 id="hero-title">Как быть<br>разработчиком,<br>которого ИИ<br><span class="green">не заменит<span class="hero-period">.</span></span></h1>
@@ -24,9 +24,9 @@
 
 <section id="schedule" class="section schedule" aria-labelledby="schedule-title">
   <div class="container">
-    <div class="section-heading"><div><span class="eyebrow">01 / Встречаемся</span><h2 id="schedule-title">Ближайшие<br>мероприятия<span class="green">.</span></h2></div><p>Москва. Небольшая аудитория.<br>Большие инженерные вопросы.</p></div>
+    <div class="section-heading"><div><span class="eyebrow">01 / Встречаемся</span><h2 id="schedule-title">Ближайшие<br>мероприятия<span class="green">.</span></h2></div><p>Оффлайн-встречи в небольшой аудитории.<br>Большие инженерные вопросы.</p></div>
     <div class="event-list">{% for event in upcoming %}{% include 'components/event.html' %}{% empty %}<div class="empty-schedule"><h3>Новые мероприятия скоро</h3><p>Анонсы — в <a href="https://t.me/moscow_python" target="_blank" rel="noopener noreferrer">Telegram Moscow Python ↗</a></p></div>{% endfor %}</div>
-    {% if archive %}<div class="archive"><h3>Прошедшие</h3><ul>{% for event in archive %}<li><time datetime="{{ event.starts_at|date:'c' }}">{{ event.starts_at|date:'d.m.Y' }}</time><span>{{ event.title }}</span></li>{% endfor %}</ul></div>{% endif %}
+    {% if archive %}<div class="archive"><h3>Прошедшие мероприятия</h3><ul>{% for event in archive %}<li><time datetime="{{ event.starts_at|date:'c' }}">{{ event.starts_at|date:'d.m.Y' }}</time><span>{{ event.title }}</span></li>{% endfor %}</ul></div>{% endif %}<a class="text-cta archive-link" href="{% url 'archive' %}">Все прошедшие мероприятия <span aria-hidden="true">→</span></a>
   </div>
 </section>
 
@@ -46,7 +46,7 @@
   </div>
 </section>
 
-<section class="manifesto" aria-labelledby="manifesto-title"><div class="container manifesto-inner"><div><span class="eyebrow">Наш главный принцип</span><h2 id="manifesto-title">Не душно.<br><span>Полезно.</span></h2></div><div class="manifesto-note"><span class="big-arrow" aria-hidden="true">↙</span><p>20–30 человек.<br>Офлайн.<br>Живой разговор.</p><span>Опыт, который не передаётся в записи.</span></div></div></section>
+<section class="manifesto" aria-labelledby="manifesto-title"><div class="container manifesto-inner"><div><span class="eyebrow">Наш главный принцип</span><h2 id="manifesto-title">Не душно.<br><span>Полезно.</span></h2></div><div class="manifesto-note"><span class="big-arrow" aria-hidden="true">↙</span><p>20–30 человек.<br>Оффлайн.<br>Живой разговор.</p><span>Опыт, который не передаётся в записи.</span></div></div></section>
 
 <section id="residents" class="section residents" aria-labelledby="residents-title"><div class="container">
   <div class="section-heading"><div><span class="eyebrow">03 / Люди</span><h2 id="residents-title">Резиденты<br>Moscow Python Pro<span class="green">.</span></h2></div><p>Практикующие инженеры и руководители.<br>Каждый день решают эти задачи<br>в реальных проектах.</p></div>
@@ -64,7 +64,7 @@
   <div class="other-formats"><span class="eyebrow">И не только</span><p>Разбор новостей <span>/</span> Code review <span>/</span> Кейс-клуб <span>/</span> Фейл-клуб</p></div>
 </div></section>
 
-<section class="section perks" aria-labelledby="perks-title"><div class="container perks-grid"><div><span class="eyebrow">05 / Продолжаем разговор</span><h2 id="perks-title">Больше,<br>чем одна<br>встреча<span class="green">.</span></h2><p>Сообщество в сообществе.<br>Остаёмся на связи и после мероприятия.</p></div><ul class="perks-list">
+<section class="section perks" aria-labelledby="perks-title"><div class="container perks-grid"><div><span class="eyebrow">05 / Продолжаем разговор</span><h2 id="perks-title">Больше,<br>чем одна <br>встреча<span class="green">.</span></h2><p>Перки для всех, кто зарегистрируется на любую встречу Moscow Python Pro.<br>Остаёмся на связи и после мероприятия.</p></div><ul class="perks-list">
   <li>Онлайн-сообщество с резидентами</li><li>Опросы по будущим темам</li><li>Приоритетные анонсы</li><li>Ранние цены на билеты для себя и друзей</li><li>Материалы после мероприятий</li><li>Онлайн-эфиры с резидентами и гостями</li><li>Ваши идеи для новых форматов и перков</li>
 </ul></div></section>
 

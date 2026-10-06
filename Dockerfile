@@ -8,7 +8,7 @@ RUN uv sync --frozen --no-dev
 FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PATH="/app/.venv/bin:$PATH"
 WORKDIR /app
-RUN useradd --create-home --uid 10001 app
+RUN useradd --create-home --uid 10001 app && mkdir /app/media && chown app:app /app/media
 COPY --from=builder /app/.venv /app/.venv
 COPY --chown=app:app . .
 RUN SECRET_KEY=build-only-no-runtime-secret DEBUG=False SITE_URL=https://localhost python manage.py collectstatic --noinput

@@ -14,6 +14,7 @@ wheels/
 *.sqlite3
 *.sqlite3-*
 staticfiles/
+media/
 .ruff_cache/
 .aws
 __screenshots__/

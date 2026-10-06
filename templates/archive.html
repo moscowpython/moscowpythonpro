@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section archive-page" aria-labelledby="archive-title">
+  <div class="container">
+    <a class="text-cta" href="{% url 'home' %}#schedule">← К ближайшим встречам</a>
+    <div class="section-heading">
+      <div><span class="eyebrow">Moscow Python Pro / Архив</span><h1 id="archive-title">Прошедшие<br>мероприятия<span class="green">.</span></h1></div>
+      <p>Темы, которые мы уже обсудили.<br>Люди, с которыми встретились.</p>
+    </div>
+    {% for event in page %}
+      {% include 'components/event.html' with is_archive=True %}
+    {% empty %}
+      <div class="empty-schedule"><p>Прошедших мероприятий пока нет. Здесь появятся встречи, которые уже состоялись.</p></div>
+    {% endfor %}
+    {% if page.has_other_pages %}
+    <nav class="pagination" aria-label="Страницы архива">
+      {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}">← Новее</a>{% endif %}
+      <span aria-current="page">{{ page.number }} / {{ page.paginator.num_pages }}</span>
+      {% if page.has_next %}<a href="?page={{ page.next_page_number }}">Раньше →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

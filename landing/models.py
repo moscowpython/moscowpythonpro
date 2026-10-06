@@ -4,6 +4,12 @@ from django.db import models
 
 class Resident(models.Model):
     name = models.CharField("Имя", max_length=200)
+    photo = models.ImageField(
+        "Фото",
+        upload_to="residents/",
+        blank=True,
+        help_text="JPEG, PNG или WebP до 5 МБ. Желательно портретное фото.",
+    )
     company = models.CharField("Компания", max_length=200)
     position = models.CharField("Должность", max_length=300)
     bio = models.TextField("Короткая биография", blank=True, help_text="1–3 предложения")

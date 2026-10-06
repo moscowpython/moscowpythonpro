@@ -1,4 +1,4 @@
-<article class="event" id="event-{{ event.pk }}" aria-labelledby="event-title-{{ event.pk }}">
+<article class="event{% if is_archive %} event--past{% endif %}" id="event-{{ event.pk }}" aria-labelledby="event-title-{{ event.pk }}">
   <div class="event-date">
     <time datetime="{{ event.starts_at|date:'c' }}">
       <span class="date-day">{{ event.starts_at|date:'d' }}</span>
@@ -7,14 +7,14 @@
     </time>
   </div>
   <div class="event-content">
-    <div class="event-meta"><span class="format-label">{{ event.format }}</span><span class="offline-label">Офлайн</span></div>
+    <div class="event-meta"><span class="format-label">{{ event.format }}</span><span class="offline-label">Оффлайн</span></div>
     <h3 id="event-title-{{ event.pk }}">{{ event.title }}</h3>
     {% if event.speaker_names %}<ul class="speakers">{% for name in event.speaker_names %}<li>{{ name }}</li>{% endfor %}</ul>{% endif %}
     {% if event.short_description %}<p class="event-description">{{ event.short_description }}</p>{% endif %}
     {% if event.location %}<p class="event-location">Место: {{ event.location }}</p>{% endif %}
   </div>
-  <div class="event-action">
+  {% if not is_archive %}<div class="event-action">
     {% if event.registration_url %}<a class="text-cta" href="{{ event.registration_url }}" target="_blank" rel="noopener noreferrer">Зарегистрироваться <span aria-hidden="true">↗</span><span class="sr-only"> — {{ event.title }}, {{ event.starts_at|date:'j E' }}, новая вкладка</span></a>
     {% else %}<span class="registration-pending" aria-disabled="true">Регистрация скоро <span aria-hidden="true">↗</span></span>{% endif %}
-  </div>
+  </div>{% endif %}
 </article>

@@ -12,4 +12,5 @@ __pycache__
 *.pyc
 .ruff_cache
 staticfiles
+media
 __screenshots__

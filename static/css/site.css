@@ -1283,3 +1283,30 @@ h1{
     transform:none
   }
 }
+
+/* Resident portraits keep their space reserved while lazy-loading. */
+.resident-photo {
+  display: block;
+  width: 160px;
+  height: 200px;
+  object-fit: cover;
+  object-position: center 25%;
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius);
+}
+.archive-link { margin-top: var(--space-5); }
+.archive-page .section-heading { margin-top: var(--space-7); }
+.archive-page h1 { font-size: var(--h2); line-height: var(--tight); }
+.event--past { grid-template-columns: 120px minmax(0, 1fr); }
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--space-7);
+}
+@media (max-width: 767px) {
+  .event--past { grid-template-columns: minmax(0, 1fr); }
+  .resident-photo { width: 128px; height: 160px; }
+}

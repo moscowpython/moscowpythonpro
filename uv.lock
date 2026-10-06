@@ -57,6 +57,7 @@ dependencies = [
     { name = "dj-database-url" },
     { name = "django" },
     { name = "gunicorn" },
+    { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
     { name = "python-dotenv" },
     { name = "whitenoise" },
@@ -64,7 +65,6 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "pillow" },
     { name = "ruff" },
 ]
 
@@ -73,16 +73,14 @@ requires-dist = [
     { name = "dj-database-url", specifier = ">=2.3,<4" },
     { name = "django", specifier = ">=5.2,<5.3" },
     { name = "gunicorn", specifier = ">=23,<24" },
+    { name = "pillow", specifier = ">=11" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2,<4" },
     { name = "python-dotenv", specifier = ">=1.1,<2" },
     { name = "whitenoise", specifier = ">=6.9,<7" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "pillow", specifier = ">=11" },
-    { name = "ruff", specifier = ">=0.11" },
-]
+dev = [{ name = "ruff", specifier = ">=0.11" }]
 
 [[package]]
 name = "packaging"
