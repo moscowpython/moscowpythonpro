@@ -1289,8 +1289,8 @@ h1{
   display: block;
   width: 160px;
   height: 200px;
-  object-fit: cover;
-  object-position: center 25%;
+  object-fit: contain;
+  object-position: left center;
   margin-bottom: var(--space-5);
   border-radius: var(--radius);
 }
