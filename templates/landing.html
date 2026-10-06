@@ -11,7 +11,7 @@
       </div>
       <aside class="hero-aside" aria-label="О встречах">
         <div class="hero-note"><span class="aside-label">Меньше сцены.<br>Больше разговора.</span><p>20–30 человек.<br>Практикующие инженеры.<br>Вопросы напрямую.</p></div>
-        {% if next_event %}<a class="next-event" href="#event-{{ next_event.pk }}">
+        {% if next_event %}<a class="next-event" href="{{ next_event.get_absolute_url }}">
           <span class="eyebrow">Ближайшая встреча <span aria-hidden="true">↗</span></span>
           <time class="next-date" datetime="{{ next_event.starts_at|date:'c' }}">{{ next_event.starts_at|date:'d.m' }}<span>{{ next_event.starts_at|date:'H:i' }} МСК</span></time>
           <span class="next-title">{{ next_event.title }}</span>
@@ -26,7 +26,7 @@
   <div class="container">
     <div class="section-heading"><div><span class="eyebrow">01 / Встречаемся</span><h2 id="schedule-title">Ближайшие<br>мероприятия<span class="green">.</span></h2></div><p>Оффлайн-встречи в небольшой аудитории.<br>Большие инженерные вопросы.</p></div>
     <div class="event-list">{% for event in upcoming %}{% include 'components/event.html' %}{% empty %}<div class="empty-schedule"><h3>Новые мероприятия скоро</h3><p>Анонсы — в <a href="https://t.me/moscow_python" target="_blank" rel="noopener noreferrer">Telegram Moscow Python ↗</a></p></div>{% endfor %}</div>
-    {% if archive %}<div class="archive"><h3>Прошедшие мероприятия</h3><ul>{% for event in archive %}<li><time datetime="{{ event.starts_at|date:'c' }}">{{ event.starts_at|date:'d.m.Y' }}</time><span>{{ event.title }}</span></li>{% endfor %}</ul></div>{% endif %}<a class="text-cta archive-link" href="{% url 'archive' %}">Все прошедшие мероприятия <span aria-hidden="true">→</span></a>
+    {% if archive %}<div class="archive"><h3>Прошедшие мероприятия</h3><ul>{% for event in archive %}<li><time datetime="{{ event.starts_at|date:'c' }}">{{ event.starts_at|date:'d.m.Y' }}</time><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></li>{% endfor %}</ul></div>{% endif %}<a class="text-cta archive-link" href="{% url 'archive' %}">Все прошедшие мероприятия <span aria-hidden="true">→</span></a>
   </div>
 </section>
 

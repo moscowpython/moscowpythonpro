@@ -27,7 +27,7 @@ class SiteOriginTests(TestCase):
             response, '<link rel="canonical" href="https://assigned-test-host.test/">'
         )
         self.assertContains(response, 'content="https://assigned-test-host.test/static/images/og.')
-        self.assertContains(response, f'"url": "https://assigned-test-host.test/#event-{event.pk}"')
+        self.assertContains(response, f'"url": "https://assigned-test-host.test/events/{event.pk}/"')
 
     @override_settings(SITE_URL_FROM_REQUEST=False, SITE_URL="https://fixed-host.test")
     def test_fixed_origin_remains_default(self):

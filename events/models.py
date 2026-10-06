@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
 
 MOSCOW = ZoneInfo("Europe/Moscow")
@@ -60,6 +61,9 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("event_detail", kwargs={"pk": self.pk})
 
     def clean(self):
         super().clean()

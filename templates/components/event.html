@@ -8,7 +8,7 @@
   </div>
   <div class="event-content">
     <div class="event-meta"><span class="format-label">{{ event.format }}</span><span class="offline-label">Оффлайн</span></div>
-    <h3 id="event-title-{{ event.pk }}">{{ event.title }}</h3>
+    <h3 id="event-title-{{ event.pk }}"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h3>
     {% if event.speaker_names %}<ul class="speakers">{% for name in event.speaker_names %}<li>{{ name }}</li>{% endfor %}</ul>{% endif %}
     {% if event.short_description %}<p class="event-description">{{ event.short_description }}</p>{% endif %}
     {% if event.location %}<p class="event-location">Место: {{ event.location }}</p>{% endif %}

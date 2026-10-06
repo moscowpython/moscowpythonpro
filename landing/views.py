@@ -18,7 +18,7 @@ def event_schema(event, site_url):
         "name": event.title,
         "startDate": event.starts_at.astimezone(MOSCOW).isoformat(),
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "url": f"{site_url}/#event-{event.pk}",
+        "url": f"{site_url}{event.get_absolute_url()}",
         "organizer": {
             "@type": "Organization",
             "name": "Moscow Python",
@@ -90,6 +90,31 @@ def archive(request):
             + (f"?page={page.number}" if page.number > 1 else ""),
             "page_title": "Прошедшие мероприятия — Moscow Python Pro",
             "page_description": "Архив оффлайн-встреч Moscow Python Pro: темы, форматы и спикеры прошедших мероприятий.",
+        },
+    )
+
+
+@require_safe
+def event_detail(request, pk):
+    event = get_object_or_404(Event.objects.published(), pk=pk)
+    origin = public_origin(request)
+    now = timezone.now()
+    schema = {"@context": "https://schema.org", **event_schema(event, origin)}
+    schema_json = json.dumps(schema, ensure_ascii=False).translate(
+        {ord("<"): r"\u003C", ord(">"): r"\u003E", ord("&"): r"\u0026"}
+    )
+    return render(
+        request,
+        "event_detail.html",
+        {
+            "event": event,
+            "is_past": event.status_at(now) == "Прошедшее",
+            "site_url": origin,
+            "canonical_url": f"{origin}{event.get_absolute_url()}",
+            "page_title": f"{event.title} — Moscow Python Pro",
+            "page_description": event.short_description or event.title,
+            "has_schema": True,
+            "schema_json": schema_json,
         },
     )
 

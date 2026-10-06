@@ -497,7 +497,7 @@ h1{
 .archive time{
   font-variant-numeric:tabular-nums
 }
-.archive li span{
+.archive li a{
   overflow-wrap:anywhere
 }
 .about{
@@ -1310,3 +1310,17 @@ h1{
   .event--past { grid-template-columns: minmax(0, 1fr); }
   .resident-photo { width: 128px; height: 160px; }
 }
+
+.event h3 a { color: inherit; }
+.event h3 a:hover { color: var(--mp-green); }
+.event-page-heading { margin-block: var(--space-7); }
+.event-page h1 { font-size: var(--h2); line-height: var(--tight); overflow-wrap: anywhere; }
+.event-page-body { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-7); }
+.event-page-body > div { min-width: 0; overflow-wrap: anywhere; }
+.event-page-date { font-size: var(--h3); color: var(--mp-green); }
+.event-page-description { margin-bottom: var(--space-6); }
+.event-page-action { margin-top: var(--space-6); }
+@media (max-width: 767px) {
+  .event-page-body { grid-template-columns: 1fr; }
+}
+.event-page-body h2 { font-size: var(--h3); margin-bottom: var(--space-4); }
